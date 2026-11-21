@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+* E126: allow a double hanging indent in multiline function signatures with
+  inline ellipsis bodies.  Issue #956.
+
 2.15.0 (2026-09-22)
 -------------------
 

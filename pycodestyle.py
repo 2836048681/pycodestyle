@@ -591,6 +591,10 @@ def continued_indentation(logical_line, tokens, indent_level, hang_closing,
     # indents on the final continuation line; in turn, some other
     # indents are allowed to have an extra 4 spaces.
     indent_next = logical_line.endswith(':')
+    # Inline ellipsis bodies allow the same hanging indent as blocks.
+    is_stub = (logical_line.endswith('...') and
+               logical_line[:-3].rstrip().endswith(':') and
+               STARTSWITH_DEF_REGEX.match(logical_line))
 
     row = depth = 0
     valid_hangs = (indent_size,) if indent_char != '\t' \
@@ -659,7 +663,7 @@ def continued_indentation(logical_line, tokens, indent_level, hang_closing,
                     # visual indent is broken
                     yield (start, "E128 continuation line "
                            "under-indented for visual indent")
-            elif hanging_indent or (indent_next and
+            elif hanging_indent or ((indent_next or is_stub) and
                                     rel_indent[row] == 2 * indent_size):
                 # hanging indent is verified
                 if close_bracket and not hang_closing:
